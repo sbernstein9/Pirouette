@@ -44,6 +44,8 @@ public class SongManager : MonoBehaviour {
 
 	public int score = 0;
 
+	public float timeGenerated;
+
 	// Use this for initialization
 	void Start () {
 

@@ -65,7 +65,9 @@ public class PlayerSc : MonoBehaviour {
 				GameObject key = keyPos [e.keyCode];
 				Destroy (SongManager.instance.indicatorParent [key].gameObject);
 				SongManager.instance.indicatorParent.Remove(key);
+				float timeHit = (float) AudioSettings.dspTime;
 				SongManager.instance.score += 10;
+
 			}
 		}
 	}
