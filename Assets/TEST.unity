@@ -2007,7 +2007,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -2133,6 +2133,7 @@ MonoBehaviour:
   beatsPrint: {fileID: 1341130547}
   scorePrint: {fileID: 1979132124}
   score: 0
+  timeGenerated: 0
 --- !u!1 &1635892557
 GameObject:
   m_ObjectHideFlags: 0

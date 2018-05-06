@@ -44,6 +44,8 @@ public class SongManager : MonoBehaviour {
 
 	public int score = 0;
 
+	public float timeGenerated;
+
 	// Use this for initialization
 	void Start () {
 
@@ -152,4 +154,14 @@ public class SongManager : MonoBehaviour {
 		}
 
 	}
+}
+
+public class Indicator{
+
+	int key;
+	GameObject pairedButton;
+	float startNote;
+	float endNote;
+
+
 }
