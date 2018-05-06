@@ -155,3 +155,13 @@ public class SongManager : MonoBehaviour {
 
 	}
 }
+
+public class Indicator{
+
+	int key;
+	GameObject pairedButton;
+	float startNote;
+	float endNote;
+
+
+}
