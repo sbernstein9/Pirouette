@@ -6,11 +6,15 @@ using UnityEngine.UI;
 public class SongManager : MonoBehaviour {
 
 	public static SongManager instance;
+	public AudioSource audioSource;
 
 	public GameObject[] keyboard = new GameObject[26];
 	public GameObject indicator;
 	public Dictionary <GameObject, GameObject> indicatorParent = new Dictionary<GameObject,GameObject> ();
 
+	public GameObject startButton;
+	public GameObject canvas;
+	public GameObject highScore;
 
 	//the current position of the song (in seconds)
 	float songPosition;
@@ -52,14 +56,16 @@ public class SongManager : MonoBehaviour {
 	Color startColor = new Color(1,1,1,1);
 	float fadeStartTime;
 
+	public Color indicatorGold;
+
 	bool gameStart = false;
 
 	// Use this for initialization
 	void Start () {
 
-		Debug.Log (GameObject.Find ("KeyText").GetComponent<SpriteRenderer> ().color);
 		instance = this;
 
+		audioSource = gameObject.GetComponent<AudioSource> ();
 		//Sprite keyText = GameObject.Find ("KeyText").GetComponent<Spri;
 
 
@@ -408,7 +414,7 @@ public class SongManager : MonoBehaviour {
 
 
 
-		if (nextIndex < notes.Length && notes[nextIndex] < songPosInBeats) //+beatsshowninadvance
+		if (nextIndex < notes.Length && notes[nextIndex] < songPosInBeats + 2) //+beatsshowninadvance
 		{
 			
 			CreateStep ();
@@ -455,18 +461,36 @@ public class SongManager : MonoBehaviour {
 		{
 			FadeIn (GameObject.Find ("2Seats"));
 		}
-		else if (songPosInBeats >= 169 && songPosInBeats <= 170)
+		else if (songPosInBeats >= 200 && songPosInBeats <= 201)
+		{
+			FadeOut (GameObject.Find ("2Seats"));
+		}
+		else if (songPosInBeats >= 207 && songPosInBeats <= 208)
 		{
 			FadeIn (GameObject.Find ("3Floor"));
 		}
-		else if (songPosInBeats >= 176 && songPosInBeats <= 177)
+		else if (songPosInBeats >= 214 && songPosInBeats <= 215)
 		{
 			FadeIn (GameObject.Find ("3Seats"));
 		}
-		else if (songPosInBeats >= 183 && songPosInBeats <= 184)
+		else if (songPosInBeats >= 221 && songPosInBeats <= 222)
 		{
 			FadeIn (GameObject.Find ("3Curtains"));
 		}
+		else if (songPosInBeats >= 500 && songPosInBeats <= 501)
+		{
+			FadeIn (GameObject.Find ("Title Screen"));
+			if (gameStart)
+			{
+				FadeIn (GameObject.Find ("Title Screen"));
+				highScore.GetComponent<Text> ().text = "High Score: " + score;
+				startButton.SetActive (true);
+				highScore.SetActive (true);
+				songPosition = 0;
+				gameStart = false;
+			}
+		}
+
 
 		if (isFadingOut)
 		{
@@ -477,7 +501,7 @@ public class SongManager : MonoBehaviour {
 			{
 				isFadingOut = false;
 			}
-			Debug.Log (fracJourney);
+			//Debug.Log (fracJourney);
 		}
 		if (isFadingIn)
 		{
@@ -488,7 +512,7 @@ public class SongManager : MonoBehaviour {
 			{
 				isFadingIn = false;
 			}
-			Debug.Log (fracJourney);
+			//Debug.Log (fracJourney);
 		}
 
 		beatsPrint.text = songPosInBeats.ToString ();
@@ -506,9 +530,49 @@ public class SongManager : MonoBehaviour {
 		{
 			GameObject newIndicator = Instantiate (indicator,keyboard[currentKey].transform.position,Quaternion.identity, keyboard[currentKey].transform);
 			indicatorParent.Add (currentButton.gameObject,newIndicator);
+			StartCoroutine (FadeInTarget(newIndicator));
 		}
 
 	}
+
+	IEnumerator FadeInTarget(GameObject targetObj)
+	{
+		float t = 0;
+		float duration = secPerBeat * 1.8f;
+		SpriteRenderer spR = targetObj.GetComponent<SpriteRenderer> ();
+		while (t < duration)
+		{
+			t += Time.deltaTime;
+			float blend = Mathf.Clamp01(t / duration);
+			spR.color = Color.Lerp(fadedColor, startColor, blend);
+			Debug.Log ("time = " + t);
+			Debug.Log ("Blend: " + blend + " spR: " + spR.color);
+			yield return null;
+		}
+		spR.color = indicatorGold;
+		yield return new WaitForSeconds (secPerBeat*2);
+		StartCoroutine (FadeOutTarget (targetObj));
+	}
+
+	IEnumerator FadeOutTarget(GameObject targetObj)
+	{
+		float t = 0;
+		float duration = secPerBeat * 8;
+		SpriteRenderer spR = targetObj.GetComponent<SpriteRenderer> ();
+		while (t < duration)
+		{
+			t += Time.deltaTime;
+			float blend = Mathf.Clamp01(t / duration);
+			spR.color = Color.Lerp(startColor, fadedColor, blend);
+			Debug.Log ("time = " + t);
+			Debug.Log ("Blend: " + blend + " spR: " + spR.color);
+			yield return null;
+		}
+		yield return new WaitForSeconds (2);
+		GameObject.Destroy (targetObj);
+	}
+
+
 
 	public void FadeOut (GameObject fadeObj)
 	{
@@ -528,9 +592,9 @@ public class SongManager : MonoBehaviour {
 
 	public void StartGame()
 	{
-		Destroy (GameObject.Find ("StartButton"));
+		startButton.SetActive(false);
 		FadeOut (GameObject.Find ("Title Screen"));
-		gameObject.GetComponent<AudioSource> ().Play();
+		audioSource.Play();
 		dsptimesong = (float) AudioSettings.dspTime;
 		gameStart = true;
 	}
