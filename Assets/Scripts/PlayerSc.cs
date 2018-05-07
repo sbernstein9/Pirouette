@@ -18,6 +18,7 @@ public class PlayerSc : MonoBehaviour {
 		instance = this;
 	
 
+
 		keyPos.Add (KeyCode.Q, GameObject.Find("Q"));
 		keyPos.Add (KeyCode.W, GameObject.Find("W"));
 		keyPos.Add (KeyCode.E, GameObject.Find("E"));
