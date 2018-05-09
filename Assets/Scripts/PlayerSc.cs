@@ -60,7 +60,7 @@ public class PlayerSc : MonoBehaviour {
 		{
 			transform.position = keyPos [e.keyCode].transform.position;
 			SongManager.instance.timeLastPressed = Time.time;
-			if (SongManager.instance.songPosInBeats >= 24)
+			if (SongManager.instance.songPosInBeats >= 22)
 			{
 				SongManager.instance.startCountdown = true;
 

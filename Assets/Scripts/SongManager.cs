@@ -66,7 +66,7 @@ public class SongManager : MonoBehaviour {
 
 
 	public float timeLastPressed;
-	public float timeSincePressed;
+	public float timeSincePressed = 0;
 	public float activeCountdown = 5;
 
 	// Use this for initialization
@@ -440,10 +440,9 @@ public class SongManager : MonoBehaviour {
 			scorePrint.enabled = true;
 			activePrint.enabled = true;
 		}
-		if (songPosInBeats >= 24 && songPosInBeats <= 25)
+		if (songPosInBeats >= 22 && songPosInBeats <= 23)
 		{
-			startCountdown = true;
-
+			//startCountdown = true;
 		}
 		if (songPosInBeats >= 80 && songPosInBeats <= 81)
 		{
@@ -566,7 +565,7 @@ public class SongManager : MonoBehaviour {
 			Debug.Log (timeSincePressed);
 			activeCountdown = 5 - timeSincePressed;
 			activePrint.text = "Don't Give Up! " + activeCountdown.ToString ("F2");
-			if (activeCountdown < 0)
+			if (activeCountdown < 0 && songPosInBeats > 30)
 			{
 				Scene scene = SceneManager.GetActiveScene(); 
 				SceneManager.LoadScene(scene.name);
