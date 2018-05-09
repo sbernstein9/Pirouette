@@ -47,12 +47,24 @@ public class PlayerSc : MonoBehaviour {
 		keyPos.Add (KeyCode.M, GameObject.Find("M"));
 	}
 		
+
+	void Update()
+	{
+		
+	}
+
 	public void OnGUI ()
 	{
 		Event e = Event.current;
 		if (e.isKey && keyPos.ContainsKey(e.keyCode))
 		{
 			transform.position = keyPos [e.keyCode].transform.position;
+			SongManager.instance.timeLastPressed = Time.time;
+			if (SongManager.instance.songPosInBeats >= 24)
+			{
+				SongManager.instance.startCountdown = true;
+
+			}
 
 			if (e.keyCode != lastKey)
 			{
@@ -64,10 +76,15 @@ public class PlayerSc : MonoBehaviour {
 			if (SongManager.instance.indicatorParent.ContainsKey(keyPos[e.keyCode])) // keyPos [e.keyCode] = SongManager.instance.currentButton && keyPos [e.keyCode].GetComponentsInChildren<Transform>() != null
 			{
 				GameObject key = keyPos [e.keyCode];
+				if (SongManager.instance.indicatorParent [key].gameObject.GetComponent<SpriteRenderer>().color == SongManager.instance.indicatorGold)
+				{
+					SongManager.instance.score += 10;
+				}
 				Destroy (SongManager.instance.indicatorParent [key].gameObject);
 				SongManager.instance.indicatorParent.Remove(key);
 				float timeHit = (float) AudioSettings.dspTime;
 				SongManager.instance.score += 10;
+
 
 			}
 		}
