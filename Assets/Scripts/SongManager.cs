@@ -505,6 +505,7 @@ public class SongManager : MonoBehaviour {
 				FadeIn (GameObject.Find ("Title Screen"));
 				highScore.GetComponent<Text> ().text = "High Score: " + score;
 				scorePrint.enabled = false;
+				activePrint.enabled = false;
 				startButton.SetActive (true);
 				highScore.SetActive (true);
 				songPosition = 0;
